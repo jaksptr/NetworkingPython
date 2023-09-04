@@ -30,12 +30,13 @@ while True:
         port_min = int(ports_valid.group(1))
         port_max = int(ports_valid.group(2))
         if port_min == port_max:
-            print(f"start scanning port {port_max}")
+            print(f"start scanning port {port_max}, please wait...")
         elif port_min > port_max:
             print("invalid range")
             continue
         else:
-            print(f"start scanning from port {port_min} to port {port_max}, please wait...")
+            print(f"start scanning from port {port_min} to port {port_max}")
+            print("listing opened port(s), please wait...")
         break
 
 for port in range(port_min, port_max + 1):
@@ -44,7 +45,7 @@ for port in range(port_min, port_max + 1):
             s.settimeout(1.0)
             s.connect((ip_add_input, port))
             s.close()
-            print(f"IP {ip_address} port {port} is open")
+            print(f"IP {ip_address} port {port} is OPEN")
     except:
         # print(f"IP {ip_add_input} port {port} is closed")
         pass
