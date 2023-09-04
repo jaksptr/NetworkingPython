@@ -9,12 +9,15 @@ import re
 ports_range_format = re.compile("([0-9]+)-([0-9]+)")
 port_min = 0
 port_max = 65535
+
 print("===================")
 print("====PORTSCANNER====")
 print("=====@jaksptr======")
 print("===================")
 
-while True:
+is_scanning = True
+
+while is_scanning:
     ip_add_input = input("Enter IP address to scan: ")
     try:
         ip_address = ipaddress.ip_address(ip_add_input)
@@ -35,7 +38,7 @@ while True:
             print("invalid range")
             continue
         else:
-            print(f"start scanning from port {port_min} to port {port_max}, please wait...")
+            print(f"start scanning at port {port_min} to port {port_max}")
         break
 
 for port in range(port_min, port_max + 1):
@@ -45,6 +48,20 @@ for port in range(port_min, port_max + 1):
             s.connect((ip_add_input, port))
             s.close()
             print(f"IP {ip_address} port {port} is open")
+    except KeyboardInterrupt:
+        is_scanning = False
+        print("Exiting...")
+        break
     except:
-        # print(f"IP {ip_add_input} port {port} is closed")
         pass
+
+    do_again = input("Scan another IP address and port range? (y/n): ")
+    if do_again.lower() == "y":
+        # Reset the variables
+        ip_add_input = None
+        ports_input = None
+        port_min = 0
+        port_max = 65535
+        continue
+    else:
+        is_scanning = False
