@@ -12,7 +12,7 @@ port_max = 65535
 print("===================")
 print("====PORTSCANNER====")
 print("=====@jaksptr======")
-print("===================")
+print("======socket=======")
 
 while True:
     ip_add_input = input("Enter IP address to scan: ")
@@ -20,7 +20,11 @@ while True:
         ip_address = ipaddress.ip_address(ip_add_input)
         break
     except:
-        print("invalid ip address")
+        try:
+            ip_address = socket.gethostbyname(ip_add_input)
+            break
+        except:
+            print("invalid ip address or domain name")
 
 while True:
     ports_input = input("Input port range to scan [beginning_port]-[end_port]: ")
@@ -42,7 +46,7 @@ while True:
 for port in range(port_min, port_max + 1):
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(1.0)
+            s.settimeout(1)
             s.connect((ip_add_input, port))
             s.close()
             print(f"IP {ip_address} port {port} is OPEN")
